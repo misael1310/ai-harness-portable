@@ -1,0 +1,41 @@
+---
+description: Tool-agnostic AGENT_HANDOFF.md rotation protocol shared across Claude Code, OpenCode, and Cursor
+alwaysApply: true
+---
+
+The handoff lifecycle uses a hybrid pattern: a thin `.ai/AGENT_HANDOFF.md` for the current
+task and an append-only `.ai/TASK_LOG.md` archive. A shared Node engine,
+`.ai/scripts/rotate-handoff.mjs`, is the single source of truth for rotation across Claude
+Code, OpenCode, and Cursor.
+
+## When to rotate
+
+Rotate when the human marks the current task done in `.ai/AGENT_HANDOFF.md` and confirms the
+task is complete (verification passed, no remaining work).
+
+## How to rotate (Cursor)
+
+Run from the integrated terminal:
+
+```bash
+node .ai/scripts/rotate-handoff.mjs
+```
+
+The script will:
+
+1. Append the current `AGENT_HANDOFF.md` to `TASK_LOG.md` with an ISO-timestamp separator.
+2. Rotate `TASK_LOG.md` into `.ai/archive/TASK_LOG-YYYY-MM.md` if it exceeds 500 lines.
+3. Overwrite `AGENT_HANDOFF.md` with a clean scaffold.
+
+Then re-read `AGENT_HANDOFF.md`, fill in the next task's title, goal, non-goals, branch, and
+base branch, and confirm with the human before implementation.
+
+## What not to do
+
+- Do not hand-edit `TASK_LOG.md` or files under `.ai/archive/`.
+- Do not append new tasks on top of an old `AGENT_HANDOFF.md`; that defeats the
+  context-window budget.
+- Do not bypass the script with manual file moves; it keeps separators and rotation thresholds
+  consistent across tools.
+
+The full protocol and rationale are in `.ai/HARNESS.md` "Handoff Protocol (Tool-Agnostic)".

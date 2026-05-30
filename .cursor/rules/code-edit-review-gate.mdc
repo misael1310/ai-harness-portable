@@ -1,0 +1,25 @@
+---
+description: Run the repository post-edit review gate after code changes.
+alwaysApply: true
+---
+
+After adding, updating, or removing code, apply this review gate before the final response.
+
+The single source of truth is `.ai/HARNESS.md` under **Post-Edit Review Gate**. Follow that
+section exactly for:
+
+- when the gate runs
+- the skip allowlist
+- the required review personas
+- reporting rules
+
+Use the five review personas defined there and mirrored in `.ai/extras/agents/`:
+
+- `.ai/extras/agents/architecture-review-agent.md`
+- `.ai/extras/agents/coding-best-practices-review-agent.md`
+- `.ai/extras/agents/owasp-top-10-agent.md`
+- `.ai/extras/agents/security-review-agent.md`
+- `.ai/extras/agents/project-conventions-agent.md`
+
+Run the gate against recently modified or newly created files only. Do not restate or weaken
+the canonical rules from `.ai/HARNESS.md` here.

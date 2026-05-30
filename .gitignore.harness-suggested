@@ -1,0 +1,26 @@
+# Suggested .gitignore additions when adopting the portable AI harness.
+# Append these lines to your project's existing .gitignore if you want to keep
+# the per-developer tool entry points and operational memory out of source
+# control. Delete the lines you do want committed.
+#
+# Rationale:
+# - `.ai/` is the canonical shared operational memory. Many teams choose to
+#   commit `.ai/` so it travels with the project. Others keep it per-developer.
+#   Decide per project; if you commit it, REMOVE the `.ai` line below.
+# - Tool-specific entry points (`.claude/`, `.cursor/`, `AGENTS.md`,
+#   `CLAUDE.md`, `opencode.json`) are usually per-developer because each
+#   contributor may use a different tool. If your team standardizes on one tool
+#   and wants the config committed, remove the matching lines.
+# - `.opencode/` and `.codegraph/` directories are usually generated and should
+#   stay ignored.
+
+# >>> ai-harness >>>
+.ai
+.claude
+.cursor
+.opencode
+.codegraph
+AGENTS.md
+CLAUDE.md
+opencode.json
+# <<< ai-harness <<<

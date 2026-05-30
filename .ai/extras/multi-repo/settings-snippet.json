@@ -1,0 +1,10 @@
+{
+  "_comment": "Merge these Read(...) entries into your .claude/settings.json permissions.allow array. Use absolute paths for sibling repos. Forward-slash paths work on Windows when prefixed with //C/.",
+  "permissions": {
+    "allow": [
+      "Read(<SIBLING_REPO_1_ABSOLUTE_PATH>/**)",
+      "Read(<SIBLING_REPO_2_ABSOLUTE_PATH>/**)",
+      "Read(<SIBLING_REPO_3_ABSOLUTE_PATH>/**)"
+    ]
+  }
+}

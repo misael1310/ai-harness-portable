@@ -1,0 +1,11 @@
+---
+description: Prevent false positives in harness self-tests.
+alwaysApply: true
+---
+
+When executing harness/self-test checks:
+1) Use direct exact-path reads as primary existence evidence.
+2) Treat successful read as definitive existence.
+3) Never mark missing based only on search output.
+4) Require two failed checks before "missing".
+5) If evidence conflicts, report "inconclusive" and include both observations.

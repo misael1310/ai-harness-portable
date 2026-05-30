@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Single source of truth for the canonical .ai/ file set verified by the harness self-test and SessionStart hook. When adopting .ai/extras/multi-repo/, add RETRIEVAL_INDEX.md to this list.",
+  "canonical_files": [
+    "PROJECT_CONTEXT.md",
+    "SECURITY_RULES.md",
+    "AGENT_HANDOFF.md",
+    "CONVENTIONS.md",
+    "HARNESS.md",
+    "DECISIONS.md",
+    "PROJECT_INDEX.md",
+    "RETRIEVAL_INDEX.md",
+    "TOOLS_AUDIT.md",
+    "TASK_LOG.md",
+    "scripts/rotate-handoff.mjs",
+    "scripts/archive-plan.mjs"
+  ],
+  "tool_entry_points": {
+    "claude_code": "CLAUDE.md",
+    "opencode": "AGENTS.md",
+    "cursor": [
+      ".cursor/rules/harness-bootstrap.mdc",
+      ".cursor/rules/handoff-protocol.mdc"
+    ]
+  },
+  "claude_artifacts": {
+    "settings": ".claude/settings.json",
+    "hooks": [
+      ".claude/hooks/block-destructive.mjs",
+      ".claude/hooks/protect-sensitive-paths.mjs",
+      ".claude/hooks/session-start-status.mjs",
+      ".claude/hooks/stop-review-gate.mjs"
+    ],
+    "commands": [
+      ".claude/commands/harness-check.md",
+      ".claude/commands/harness-onboard.md",
+      ".claude/commands/harness-review.md",
+      ".claude/commands/handoff-complete.md",
+      ".claude/commands/harness-plan-create.md",
+      ".claude/commands/harness-plan-archive.md",
+      ".claude/commands/harness-security-scan.md"
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+---
+description: AI workspace bootstrap — canonical rules in .ai/
+alwaysApply: true
+---
+
+This repository keeps the canonical AI workspace in `.ai/`. This file is intentionally thin —
+the hub. Durable rules live in `.ai/`, never here.
+
+Language: Spanish conversation / English on disk. Never commit.
+Security: never read secrets; ask before installs, network, destructive ops.
+Verification: After code edits run `npm run check:types` and `npm run lint:fix`; self-correct failures automatically.
+
+## Session start — read these first, always
+
+```
+@.ai/AGENT_HANDOFF.md
+@.ai/PROJECT_CONTEXT.md
+@.ai/RETRIEVAL_INDEX.md
+```
+
+## Lazy-load on demand — read only when the task touches that area
+
+| When... | Read |
+|---|---|
+| Writing or reviewing code | `@.ai/CONVENTIONS.md` |
+| Auth, tokens, secrets, CORS, CSP, analytics | `@.ai/SECURITY_RULES.md` |
+| Handoff, self-test, maintenance, adding rules | `@.ai/HARNESS.md` |
+| Architectural decisions | `@.ai/DECISIONS.md` |
+| Exploring the codebase | `@.ai/PROJECT_INDEX.md` |
+
+## Harness operations — read only during those operations
+
+| Operation | Read |
+|---|---|
+| Onboarding or drift review | `@.ai/TOOLS_AUDIT.md` |
+| Handoff rotation | `@.ai/TASK_LOG.md` |
+
+## Commands reference
+
+| Action | How |
+|---|---|
+| Self-test | Follow `.claude/commands/harness-check.md` |
+| Onboarding | Follow `.claude/commands/harness-onboard.md` |
+| Drift review | Follow `.claude/commands/harness-review.md` |
+| Rotate handoff | `node .ai/scripts/rotate-handoff.mjs` |
+| Auto-Evolve | Follow `.claude/commands/harness-evolve.md` |
+| Add rule | `"Save this as a rule: <text>"` → wait for confirmation |
+| Create plan | Copy `.ai/plans/_template.md`, set `status: draft` |
+
+## Lazy loading rule
+
+**Do NOT preemptively load all referenced files at session start.** Read the three
+session-start files above, then load others only when the task requires them. When
+a file is loaded via `@` reference, treat its content as mandatory instructions.
+
+## Read-first file existence policy
+
+For harness and canonical-file verification:
+- Never report "missing" from search/glob output alone.
+- Always attempt direct exact-path read first.
+- Successful read is definitive evidence that the file exists.
+- If read fails, run one secondary verification before classifying as missing.
+- If checks conflict and no successful read is possible, classify as inconclusive, not missing.

@@ -2,8 +2,8 @@
 description: Run the Clean Code review gate after qualifying code edits for naming, complexity, readability, maintainability, magic literals, DRY/KISS, and error handling.
 permission:
   edit: deny
-  bash: ask
-  webfetch: ask
+  bash: deny
+  webfetch: deny
 ---
 
 # Coding Best Practices Agent

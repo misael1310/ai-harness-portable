@@ -150,10 +150,8 @@ Each tool has its own thin entry point that delegates to `.ai/`:
 | OpenCode    | `AGENTS.md` + `opencode.json`        | `.opencode/`*  |
 | Cursor      | `.cursor/rules/*.mdc`                | `.cursor/`     |
 
-*`.opencode/agents/` is created by OpenCode on first use; install only
-provides `AGENTS.md` and `opencode.json`. Mirror the canonical
-`.claude/agents/<name>.md` personas into `.opencode/agents/<name>.md` if you
-want OpenCode to run the post-edit review gate locally.
+*`.opencode/agents/` ships with read-only mirrors of the review personas so
+OpenCode can run the post-edit review gate locally.
 
 ## Optional dependencies
 

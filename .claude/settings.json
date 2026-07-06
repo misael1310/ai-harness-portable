@@ -11,7 +11,6 @@
       "Bash(node .ai/scripts/rotate-handoff.mjs)",
       "Bash(node .ai/scripts/rotate-handoff.mjs --dry-run)",
       "Bash(node .ai/scripts/archive-plan.mjs:*)",
-      "Bash(node -e:*)",
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
@@ -185,7 +184,10 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node .claude/hooks/stop-review-gate.mjs"
+            "command": "node",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/stop-review-gate.mjs"
+            ]
           }
         ]
       }

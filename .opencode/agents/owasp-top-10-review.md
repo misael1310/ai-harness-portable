@@ -2,8 +2,8 @@
 description: Run a strict OWASP Top 10 review after qualifying code edits, especially around URLs, query params, DOM rendering, shell commands, and postMessage flows.
 permission:
   edit: deny
-  bash: ask
-  webfetch: ask
+  bash: deny
+  webfetch: deny
 ---
 
 # OWASP Top 10 Agent

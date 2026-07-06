@@ -2,8 +2,8 @@
 description: Run a DevSecOps review after qualifying code edits for secrets leakage, risky dependencies, environment config, containers, and CI/CD security.
 permission:
   edit: deny
-  bash: ask
-  webfetch: ask
+  bash: deny
+  webfetch: deny
 ---
 
 # Security Review Agent

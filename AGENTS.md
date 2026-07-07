@@ -69,7 +69,7 @@ Rule: a readable file exists.
 ## Post-Edit Review Gate
 
 Follow `.ai/HARNESS.md` "Post-Edit Review Gate" — single source of truth for the
-trigger taxonomy, the skip allowlist, the subagents to invoke, and the per-tool
+route taxonomy, the skip allowlist, the subagents to invoke, and the per-tool
 persona paths.
 
 <!-- CODEGRAPH_START -->

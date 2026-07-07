@@ -92,9 +92,9 @@ During self-test reporting, separate:
 ## Post-Edit Review Gate
 
 Follow `@.ai/HARNESS.md` "Post-Edit Review Gate" — single source of truth for the
-trigger taxonomy, the skip allowlist, the subagents to invoke, and the per-tool
-persona paths. The Claude Code `Stop` hook in `.claude/settings.json` re-injects
-the reminder at turn end.
+route taxonomy, the skip allowlist, the subagents to invoke, and the per-tool
+persona paths. The Claude Code `Stop` hook in `.claude/settings.json` enforces
+the security route floor at turn end.
 
 ## Lazy loading rule
 

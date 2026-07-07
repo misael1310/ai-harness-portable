@@ -2,8 +2,8 @@
 description: Run a strict architecture review after qualifying code edits for boundaries, coupling, SOLID, state/data flow, and cross-repo contract impact.
 permission:
   edit: deny
-  bash: ask
-  webfetch: ask
+  bash: deny
+  webfetch: deny
 ---
 
 # Architecture Review Agent

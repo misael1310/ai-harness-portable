@@ -2,8 +2,8 @@
 description: Enforce only the rules written in .ai/CONVENTIONS.md after qualifying code edits.
 permission:
   edit: deny
-  bash: ask
-  webfetch: ask
+  bash: deny
+  webfetch: deny
 ---
 
 # Project Conventions Agent

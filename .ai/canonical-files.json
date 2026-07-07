@@ -29,7 +29,8 @@
       ".claude/hooks/block-destructive.mjs",
       ".claude/hooks/protect-sensitive-paths.mjs",
       ".claude/hooks/session-start-status.mjs",
-      ".claude/hooks/stop-review-gate.mjs"
+      ".claude/hooks/stop-review-gate.mjs",
+      ".claude/hooks/stop-review-gate.test.mjs"
     ],
     "commands": [
       ".claude/commands/harness-check.md",

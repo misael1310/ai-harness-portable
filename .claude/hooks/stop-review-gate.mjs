@@ -8,6 +8,7 @@
  */
 
 import { execFileSync } from "node:child_process";
+import fs from "node:fs";
 import { stdin } from "node:process";
 import os from "node:os";
 import path from "node:path";
@@ -210,19 +211,20 @@ function _hasNewTopLevelModule(changes, trackedTopLevelDirs) {
     if (!change.untracked) return false;
     const first = change.path.split("/")[0];
     if (!first || first.startsWith(".")) return false;
-    if (!change.path.includes("/") && !change.path.endsWith("/")) return false;
-    if (change.path.endsWith("/")) return true;
+    if (!change.path.includes("/")) return false;
     return trackedTopLevelDirs?.size ? !trackedTopLevelDirs.has(first) : false;
   });
 }
 
-export function classifyRoute(changes, stat = { files: 0, lines: 0 }, options = {}) {
+export function classifyRoute(changes, stat = { lines: 0 }, options = {}) {
   const paths = _uniquePaths(changes);
+  const changedFileCount = paths.length;
+  const trackedLineCount = stat.lines || 0;
   const counts = {
-    files: paths.length,
-    trackedLines: stat.lines || 0,
+    files: changedFileCount,
+    trackedLines: trackedLineCount,
     cheapSize:
-      paths.length <= CHEAP_MAX_FILES && (stat.lines || 0) <= CHEAP_MAX_LINES ? 1 : 0,
+      changedFileCount <= CHEAP_MAX_FILES && trackedLineCount <= CHEAP_MAX_LINES ? 1 : 0,
     security: paths.filter(isSecurityPath).length,
     architecture: 0,
     untracked: changes.filter((change) => change.untracked).length,
@@ -237,8 +239,8 @@ export function classifyRoute(changes, stat = { files: 0, lines: 0 }, options = 
 
   const architectureTriggered =
     _hasNewTopLevelModule(changes, options.trackedTopLevelDirs) ||
-    counts.files >= ARCH_MIN_FILES ||
-    counts.trackedLines >= ARCH_MIN_LINES;
+    changedFileCount >= ARCH_MIN_FILES ||
+    trackedLineCount >= ARCH_MIN_LINES;
   counts.architecture = architectureTriggered ? 1 : 0;
 
   if (counts.security && architectureTriggered) {
@@ -270,8 +272,26 @@ function _git(args) {
 }
 
 function _isInsideRepoRoot(repoRoot, target) {
-  const rel = path.relative(repoRoot, target);
+  const resolvedRoot = path.resolve(repoRoot);
+  const resolvedTarget = path.resolve(target);
+  return (
+    _isInsidePath(resolvedRoot, resolvedTarget) ||
+    _isInsidePath(_realPathOrResolved(resolvedRoot), _realPathOrResolved(resolvedTarget))
+  );
+}
+
+function _isInsidePath(root, target) {
+  const rel = path.relative(root, target);
   return rel === "" || (!!rel && !rel.startsWith("..") && !path.isAbsolute(rel));
+}
+
+function _realPathOrResolved(filePath) {
+  const resolved = path.resolve(filePath);
+  try {
+    return fs.realpathSync(resolved);
+  } catch {
+    return resolved;
+  }
 }
 
 // Drop PATH entries that resolve to or inside repoRoot so a repo-owned binary
@@ -303,7 +323,6 @@ export function collectGitRoute() {
   return classifyRoute(
     changes,
     {
-      files: worktree.files + staged.files,
       lines: worktree.lines + staged.lines,
     },
     { trackedTopLevelDirs },

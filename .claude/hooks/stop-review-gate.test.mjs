@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 
 import {
@@ -17,7 +19,7 @@ import {
 
 const HOOK_OUTPUT_MAX_CHARS = 10000;
 
-function route(paths, stat = { files: 0, lines: 0 }, options = {}) {
+function route(paths, stat = { lines: 0 }, options = {}) {
   return classifyRoute(
     paths.map((entry) => {
       const [status, filePath] = entry;
@@ -91,20 +93,19 @@ assert.equal(route([[" M", ".ai/plans/_template.md"]]), ROUTES.CHEAP);
 assert.equal(route([[" M", ".ai/DECISIONS.md"]]), ROUTES.CHEAP);
 assert.equal(route([[" M", ".ai/HARNESS.md"]]), ROUTES.SECURITY);
 assert.equal(
-  route([["??", "src/feature/new.ts"]], { files: 0, lines: 0 }, { trackedTopLevelDirs: new Set(["src"]) }),
+  route([["??", "src/feature/new.ts"]], { lines: 0 }, { trackedTopLevelDirs: new Set(["src"]) }),
   ROUTES.FULL,
 );
 assert.equal(
-  route([["??", "notes.txt"]], { files: 0, lines: 0 }, { trackedTopLevelDirs: new Set(["src"]) }),
+  route([["??", "notes.txt"]], { lines: 0 }, { trackedTopLevelDirs: new Set(["src"]) }),
   ROUTES.FULL,
 );
 
 const manyFiles = Array.from({ length: ARCH_MIN_FILES }, (_, i) => [" M", `src/f${i}.ts`]);
 assert.equal(route(manyFiles), ROUTES.ARCHITECTURE);
-assert.equal(route([[" M", "src/a.ts"]], { files: 1, lines: ARCH_MIN_LINES }), ROUTES.ARCHITECTURE);
-assert.equal(route([["??", "new-module/"]]), ROUTES.ARCHITECTURE);
+assert.equal(route([[" M", "src/a.ts"]], { lines: ARCH_MIN_LINES }), ROUTES.ARCHITECTURE);
 assert.equal(
-  route([["??", "new-module/index.ts"]], { files: 0, lines: 0 }, { trackedTopLevelDirs: new Set(["src"]) }),
+  route([["??", "new-module/index.ts"]], { lines: 0 }, { trackedTopLevelDirs: new Set(["src"]) }),
   ROUTES.ARCHITECTURE,
 );
 assert.equal(route([[" M", ".github/workflows/deploy.yml"]]), ROUTES.SECURITY);
@@ -112,8 +113,8 @@ assert.equal(route([["R ", "README-gate.md"], ["R ", ".claude/hooks/old-gate.mjs
 assert.equal(
   route([
     [" M", ".github/workflows/deploy.yml"],
-    ["??", "new-module/"],
-  ]),
+    ["??", "new-module/index.ts"],
+  ], { lines: 0 }, { trackedTopLevelDirs: new Set(["src"]) }),
   ROUTES.FULL,
 );
 
@@ -163,6 +164,35 @@ assert.equal(ARCH_MIN_LINES, 501);
       crossDrive,
       "different-drive entry must be kept on Windows",
     );
+  }
+}
+
+// Symlinked PATH entries that point inside repoRoot must be filtered too.
+{
+  const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "stop-review-gate-"));
+  try {
+    const repoRoot = path.join(tmpRoot, "repo");
+    const insideBin = path.join(repoRoot, "node_modules", ".bin");
+    const linkedBin = path.join(tmpRoot, "linked-bin");
+    const repoOwnedLink = path.join(repoRoot, "linked-out-bin");
+    const outsideBin = path.join(tmpRoot, "outside-bin");
+    fs.mkdirSync(insideBin, { recursive: true });
+    fs.mkdirSync(outsideBin, { recursive: true });
+
+    fs.symlinkSync(insideBin, linkedBin, process.platform === "win32" ? "junction" : "dir");
+    fs.symlinkSync(outsideBin, repoOwnedLink, process.platform === "win32" ? "junction" : "dir");
+
+    const kept = filterPathEntries(
+      repoRoot,
+      [linkedBin, repoOwnedLink, outsideBin].join(path.delimiter),
+    )
+      .split(path.delimiter)
+      .filter(Boolean);
+    assert.ok(!kept.includes(linkedBin), "symlink into repoRoot must be filtered");
+    assert.ok(!kept.includes(repoOwnedLink), "repo-owned symlink must be filtered");
+    assert.ok(kept.includes(outsideBin), "outside PATH entry must be kept");
+  } finally {
+    fs.rmSync(tmpRoot, { recursive: true, force: true });
   }
 }
 

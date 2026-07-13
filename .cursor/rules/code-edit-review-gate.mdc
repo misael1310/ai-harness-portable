@@ -8,8 +8,10 @@ After adding, updating, or removing code, apply this review gate before the fina
 The single source of truth is `.ai/HARNESS.md` under **Post-Edit Review Gate**. Follow that
 section exactly for:
 
-- the risk-router route (`none`, `cheap_review`, `targeted_security`, `targeted_architecture`, `full_gate`)
-- the exact `none` skip allowlist
+- the risk-router route (`none`, `cheap_review`, `standard_review`, `targeted_tests`,
+  `targeted_data_integrity`, `targeted_security`, `targeted_architecture`,
+  `targeted_agent_harness`, `full_gate`)
+- the exact `none` skip allowlist and path category predicates
 - the required review personas for the selected route
 - reporting rules and untrusted changed-path/diff handoff
 
@@ -17,6 +19,7 @@ Use only the review personas selected by the route. The personas are mirrored in
 
 - `.ai/extras/agents/architecture-review-agent.md`
 - `.ai/extras/agents/coding-best-practices-review-agent.md`
+- `.ai/extras/agents/data-integrity-review-agent.md`
 - `.ai/extras/agents/owasp-top-10-agent.md`
 - `.ai/extras/agents/security-review-agent.md`
 - `.ai/extras/agents/project-conventions-agent.md`

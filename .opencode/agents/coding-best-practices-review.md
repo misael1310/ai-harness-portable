@@ -21,6 +21,9 @@ Review recently modified or newly created code only. Do not edit files. Do not r
 3. Magic Numbers & Strings: Suggest extracting hardcoded literals into named constants.
 4. DRY & KISS: Identify duplication and overly clever code.
 5. Error Handling: Ensure errors are not swallowed and logging is appropriate.
+6. Targeted-Test Security Floor: For `targeted_tests`, check changed tests for new shell
+   commands, network calls, secret-like fixtures, and dependency changes; escalate security
+   findings instead of treating them as style issues.
 
 ## Output Format
 

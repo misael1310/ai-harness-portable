@@ -27,6 +27,9 @@ Invoke this agent when:
 3. **Magic Numbers & Strings**: Scan for hardcoded literals. Suggest extracting them into named constants or enums.
 4. **DRY & KISS**: Identify duplicated logic and suggest extraction. If a clever one-liner is unreadable, suggest breaking it down into simple, explicit steps.
 5. **Error Handling**: Ensure errors are not swallowed (`catch (e) { console.log(e); }`). Enforce proper throwing, wrapping, and logging of exceptions.
+6. **Targeted-Test Security Floor**: For `targeted_tests`, check changed tests for new shell
+   commands, network calls, secret-like fixtures, and dependency changes. Escalate any
+   security finding instead of treating it as a style issue.
 
 ## Output Format
 

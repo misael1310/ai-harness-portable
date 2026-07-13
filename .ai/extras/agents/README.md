@@ -2,7 +2,7 @@
 
 Pre-built, highly-opinionated subagent personas to wire into your tool's native agent path. 
 
-The scaffold default does not ship a cross-tool `.ai/agents/` directory automatically because each tool has its own agent path, and having 9 powerful agents loaded at all times consumes context. Instead, you opt-in to the specific personas your project needs.
+The scaffold default does not ship a cross-tool `.ai/agents/` directory automatically because each tool has its own agent path, and having 10 powerful agents loaded at all times consumes context. Instead, you opt-in to the specific personas your project needs.
 
 ## Available Powerful Personas
 
@@ -10,8 +10,9 @@ The scaffold default does not ship a cross-tool `.ai/agents/` directory automati
 |---|---|
 | `architecture-review-agent.md` | Strict Software Architect: Checks SOLID, boundary leaks, coupling. |
 | `coding-best-practices-review-agent.md` | Staff Engineer: Enforces Clean Code, DRY, cyclomatic complexity reduction. |
+| `data-integrity-review-agent.md` | Database Reliability Engineer: Migration safety, unsafe-query integrity consequences, seed/import/export, tenant/RLS isolation. Executable mirrors ship for Claude Code and OpenCode; Cursor references this canonical persona through its rule. |
 | `docs-agent.md` | Dev Advocate: Writes perfect JSDoc/Docstrings without hallucination. |
-| `owasp-top-10-agent.md` | AppSec Pen-Tester: Strictly hunts for OWASP 2021 Top 10 vulnerabilities. |
+| `owasp-top-10-agent.md` | AppSec Pen-Tester: Strictly hunts for OWASP Top 10:2025 vulnerabilities. |
 | `project-conventions-agent.md` | The Gatekeeper: Ruthlessly enforces rules listed in `.ai/CONVENTIONS.md`. |
 | `refactor-agent.md` | Martin Fowler Disciple: Proposes safe, step-by-step refactoring patterns. |
 | `security-review-agent.md` | DevSecOps: Hunts for leaked secrets, risky dependencies, and CI flaws. |
@@ -54,7 +55,7 @@ Cursor handles agents natively via its new Composer/Agent sub-task features, but
 
 ## Why opt-in
 
-Pre-shipping all 9 agents in the default scaffold:
+Pre-shipping all 10 agents in the default scaffold:
 - Tempts adopters to keep agents they never invoke (drift).
 - Consumes massive context window overhead if globally active.
 - Couples the scaffold to a specific agent topology.

@@ -33,9 +33,9 @@ post-edit review gate, and Context7-aware conventions.
 │   ├── settings.json               # Permissions, hooks, SessionStart status
 │   ├── hooks/                      # block-destructive, protect-sensitive-paths, session-start-status, stop-review-gate
 │   ├── commands/                   # /harness-check, /harness-onboard, /harness-review, /harness-evolve, /harness-plan-create, /harness-plan-archive, /harness-security-scan, /handoff-complete
-│   └── agents/                     # 5 post-edit review personas + refactor
+│   └── agents/                     # 6 post-edit review personas + refactor
 ├── .opencode/
-│   └── agents/                     # 5 OpenCode mirrors of the review personas
+│   └── agents/                     # 6 OpenCode mirrors of the review personas
 ├── .cursor/
 │   └── rules/                      # Generic harness rules only (no stack-specific rules)
 ├── AGENTS.md                       # OpenCode entry point
